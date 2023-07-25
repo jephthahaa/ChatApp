@@ -220,6 +220,7 @@ $sendButtonBgColor: #2c3e50;   // Blue
 
     .chat {
       flex: 2;
+      overflow: auto;
 
       .chatInfo {
         height: 50px;
