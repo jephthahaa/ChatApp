@@ -87,6 +87,8 @@ const Input = () => {
         onKeyPress={handleKeyPress}
         value={text}
       />
+
+      {/* Send button */}
       <div className="send">
         <input
           type="file"
