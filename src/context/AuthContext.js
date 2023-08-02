@@ -1,32 +1,22 @@
+import { createContext, useEffect, useState } from "react";
+import { auth } from "../firebase";
 import { onAuthStateChanged } from "firebase/auth";
-import { useEffect, useState } from "react";
-import { auth, database, ref, set, onDisconnect } from "../firebase";
-import { createContext } from "react";
 
+export const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState({});
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsub = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
-
-      if (user) {
-        const userStatusRef = ref(database, `/status/${user.uid}`);
-        set(userStatusRef, { online: true });
-
-        onDisconnect(userStatusRef).set({ online: false });
-      }
+      console.log(user);
     });
 
     return () => {
-      if (currentUser) {
-        const userStatusRef = ref(database, `/status/${currentUser.uid}`);
-        set(userStatusRef, { online: false });
-      }
-      unsubscribe();
+      unsub();
     };
-  }, [currentUser]);
+  }, []);
 
   return (
     <AuthContext.Provider value={{ currentUser }}>
@@ -34,5 +24,3 @@ export const AuthContextProvider = ({ children }) => {
     </AuthContext.Provider>
   );
 };
-
-export const AuthContext = createContext();

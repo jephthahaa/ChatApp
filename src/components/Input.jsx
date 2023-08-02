@@ -1,4 +1,5 @@
 import React, { useContext, useState } from "react";
+
 import { AuthContext } from "../context/AuthContext";
 import { ChatContext } from "../context/ChatContext";
 import {
@@ -87,8 +88,6 @@ const Input = () => {
         onKeyPress={handleKeyPress}
         value={text}
       />
-
-      {/* Send button */}
       <div className="send">
         <input
           type="file"
@@ -96,6 +95,7 @@ const Input = () => {
           id="file"
           onChange={(e) => setImg(e.target.files[0])}
         />
+        
         <button onClick={handleSend}>Send</button>
       </div>
     </div>

@@ -1,15 +1,3 @@
-// Colors
-$primaryColor: #f0d056;   // Gold
-$secondaryColor: #2c3e50; // Blue
-$tertiaryColor: #2c3e50;  // Blue
-$sidebarBgColor: #3e3c61;  // Darker Blue
-$navbarBgColor: #2f2d52;  // Darker Blue
-$messageBgColor: #ddddf7; // Lighter Blue
-$ownerMessageBgColor: #2c3e50; // Blue
-$sendButtonBgColor: #2c3e50;   // Blue
-
-
-
 // Mixins
 @mixin mobile {
   @media screen and (max-width: 480px) {
@@ -29,26 +17,24 @@ $sendButtonBgColor: #2c3e50;   // Blue
   }
 }
 
+// Colors
+$primary-color: #1da1f2; // Twitter Blue
+$accent-color: #14171a; // Dark Gray
+$text-color: #ffffff; // White
+$secondary-color: #657786; // Light Gray for secondary
+
+// Styling
+$form-background: #f5f5f5;
+
 .formContainer {
-  background-color: $primaryColor;
+  background-color: $primary-color;
   height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  /* Example CSS styles for the error message container */
-.error {
-  background-color: #ffcccc;
-  color: #ff0000;
-  font-size: 14px;
-  padding: 8px;
-  border-radius: 4px;
-  margin-top: 10px;
-  width: 100%;
-}
-
 
   .formWrapper {
-    background-color: white;
+    background-color: $form-background;
     padding: 20px 60px;
     border-radius: 10px;
     display: flex;
@@ -57,14 +43,14 @@ $sendButtonBgColor: #2c3e50;   // Blue
     align-items: center;
 
     .logo {
-      color: $secondaryColor;
+      color: $primary-color;
       font-weight: bold;
-      font-size: 24px;
+      font-size: 28px;
     }
 
     .title {
-      color: $secondaryColor;
-      font-size: 12px;
+      color: $primary-color;
+      font-size: 14px;
     }
 
     form {
@@ -76,27 +62,31 @@ $sendButtonBgColor: #2c3e50;   // Blue
         padding: 15px;
         border: none;
         width: 250px;
-        border-bottom: 1px solid $primaryColor;
+        border-bottom: 1px solid $accent-color;
         &::placeholder {
-          color: lighten($primaryColor, 20%);
+          color: #aaaaaa;
         }
       }
 
       button {
-        background-color: $tertiaryColor;
-        color: white;
+        background-color: $accent-color;
+        color: $text-color;
         padding: 10px;
         font-weight: bold;
         border: none;
         cursor: pointer;
+        transition: background-color 0.3s ease;
+        &:hover {
+          background-color: darken($accent-color, 10%);
+        }
       }
 
       label {
         display: flex;
         align-items: center;
         gap: 10px;
-        color: $navbarBgColor;
-        font-size: 12px;
+        color: $accent-color;
+        font-size: 14px;
         cursor: pointer;
 
         img {
@@ -104,26 +94,25 @@ $sendButtonBgColor: #2c3e50;   // Blue
         }
       }
     }
-
     p {
-      color: $secondaryColor;
-      font-size: 12px;
+      color: $accent-color;
+      font-size: 14px;
       margin-top: 10px;
     }
   }
 }
 
 .home {
-  background-color: $primaryColor;
+  background-color: $primary-color;
   height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
 
   .container {
-    border: 1px solid white;
+    background-color: $form-background;
     border-radius: 10px;
-    width: 65%;
+    width: 80%;
     height: 80%;
     display: flex;
     overflow: hidden;
@@ -133,18 +122,18 @@ $sendButtonBgColor: #2c3e50;   // Blue
 
     .sidebar {
       flex: 1;
-      background-color: $sidebarBgColor;
-      position: relative;
-      overflow: scroll;
+      background-color: $secondary-color;
+      display: flex;
+      flex-direction: column;
 
       .navbar {
         display: flex;
         align-items: center;
-        background-color: $navbarBgColor;
+        background-color: $secondary-color;
         height: 50px;
         padding: 10px;
         justify-content: space-between;
-        color: $messageBgColor;
+        color: $text-color;
 
         .logo {
           font-weight: bold;
@@ -156,10 +145,9 @@ $sendButtonBgColor: #2c3e50;   // Blue
         .user {
           display: flex;
           gap: 10px;
-          
+          align-items: center;
 
           img {
-            background-color: $messageBgColor;
             height: 24px;
             width: 24px;
             border-radius: 50%;
@@ -167,11 +155,12 @@ $sendButtonBgColor: #2c3e50;   // Blue
           }
 
           button {
-            background-color: $secondaryColor;
-            color: $messageBgColor;
-            font-size: 10px;
+            background-color: transparent;
+            color: $text-color;
+            font-size: 12px;
             border: none;
             cursor: pointer;
+            text-decoration: underline;
             @include tablet {
               position: absolute;
               bottom: 10px;
@@ -181,34 +170,35 @@ $sendButtonBgColor: #2c3e50;   // Blue
       }
 
       .search {
-        border-bottom: 1px solid gray;
+        border-bottom: 1px solid $accent-color;
+        padding: 10px;
 
-        .searchForm {
-          padding: 10px;
+        input {
+          background-color: transparent;
+          border: none;
+          color: $text-color;
+          outline: none;
+          width: 100%;
 
-          input {
-            background-color: transparent;
-            border: none;
-            color: white;
-            outline: none;
-
-            &::placeholder {
-              color: lightgray;
-            }
+          &::placeholder {
+            color: #aaaaaa;
           }
         }
       }
-      
+
       .userChat {
         padding: 10px;
         display: flex;
         align-items: center;
         gap: 10px;
-        color: white;
+        color: $text-color;
         cursor: pointer;
+        background-color: $accent-color;
+        border-bottom: 1px solid $accent-color;
+        transition: background-color 0.3s ease;
 
         &:hover {
-          background-color: $navbarBgColor;
+          background-color: darken($accent-color, 10%);
         }
 
         img {
@@ -225,7 +215,7 @@ $sendButtonBgColor: #2c3e50;   // Blue
           }
           p {
             font-size: 14px;
-            color: lightgray;
+            color: #cccccc;
           }
         }
       }
@@ -233,17 +223,18 @@ $sendButtonBgColor: #2c3e50;   // Blue
 
     .chat {
       flex: 2;
-      
-      
+      background-color: $text-color;
+      display: flex;
+      flex-direction: column;
 
       .chatInfo {
         height: 50px;
-        background-color: $secondaryColor;
+        background-color: $secondary-color;
         display: flex;
         align-items: center;
         justify-content: space-between;
         padding: 10px;
-        color: lightgray;
+        color: $text-color;
       }
 
       .chatIcons {
@@ -257,7 +248,7 @@ $sendButtonBgColor: #2c3e50;   // Blue
       }
 
       .messages {
-        background-color: $messageBgColor;
+        background-color: $form-background;
         padding: 10px;
         height: calc(100% - 160px);
         overflow: scroll;
@@ -270,7 +261,7 @@ $sendButtonBgColor: #2c3e50;   // Blue
           .messageInfo {
             display: flex;
             flex-direction: column;
-            color: gray;
+            color: #999999;
             font-weight: 300;
 
             img {
@@ -280,6 +271,7 @@ $sendButtonBgColor: #2c3e50;   // Blue
               object-fit: cover;
             }
           }
+
           .messageContent {
             max-width: 80%;
             display: flex;
@@ -287,10 +279,11 @@ $sendButtonBgColor: #2c3e50;   // Blue
             gap: 10px;
 
             p {
-              background-color: white;
+              background-color: $accent-color;
               padding: 10px 20px;
               border-radius: 0px 10px 10px 10px;
               max-width: max-content;
+              color: $text-color;
             }
 
             img {
@@ -304,9 +297,7 @@ $sendButtonBgColor: #2c3e50;   // Blue
             .messageContent {
               align-items: flex-end;
               p {
-                background-color: $ownerMessageBgColor;
-                color: white;
-                border-radius: 10px 0px 10px 10px;
+                background-color: $secondary-color;
               }
             }
           }
@@ -315,7 +306,7 @@ $sendButtonBgColor: #2c3e50;   // Blue
 
       .input {
         height: 50px;
-        background-color: white;
+        background-color: $form-background;
         padding: 10px;
         display: flex;
         align-items: center;
@@ -325,11 +316,13 @@ $sendButtonBgColor: #2c3e50;   // Blue
           width: 100%;
           border: none;
           outline: none;
-          color: $navbarBgColor;
+          color: $accent-color;
           font-size: 18px;
+          background-color: #f5f5f5;
 
           &::placeholder {
-            color: lightgray;
+            color: #aaaaaa;
+            
           }
         }
 
@@ -346,9 +339,13 @@ $sendButtonBgColor: #2c3e50;   // Blue
           button {
             border: none;
             padding: 10px 15px;
-            color: white;
-            background-color: $sendButtonBgColor;
+            color: $text-color;
+            background-color: $secondary-color;
             cursor: pointer;
+            transition: background-color 0.3s ease;
+            &:hover {
+              background-color: darken($secondary-color, 10%);
+            }
           }
         }
       }
