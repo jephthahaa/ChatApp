@@ -281,7 +281,7 @@ $form-background: #f5f5f5;
             p {
               background-color: $accent-color;
               padding: 10px 20px;
-              border-radius: 0px 10px 10px 10px;
+              border-radius: 10px 10px 10px 0px;
               max-width: max-content;
               color: $text-color;
             }
@@ -293,6 +293,9 @@ $form-background: #f5f5f5;
 
           &.owner {
             flex-direction: row-reverse;
+             p{ 
+              border-radius: 10px 10px 0px 10px;
+             }
 
             .messageContent {
               align-items: flex-end;
