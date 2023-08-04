@@ -1,50 +1,75 @@
-import { doc, onSnapshot } from "firebase/firestore";
+import { collection, onSnapshot, query, where } from "firebase/firestore";
 import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { ChatContext } from "../context/ChatContext";
 import { db } from "../firebase";
 
 const Chats = () => {
-  const [chats, setChats] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [showAvailableOnly, setShowAvailableOnly] = useState(false);
 
   const { currentUser } = useContext(AuthContext);
   const { dispatch } = useContext(ChatContext);
 
   useEffect(() => {
-    const getChats = () => {
-      // Ensure currentUser exists and has a uid before fetching chats
+    const getUsers = () => {
       if (currentUser && currentUser.uid) {
-        const unsub = onSnapshot(doc(db, "userChats", currentUser.uid), (snapshot) => {
-          setChats(snapshot.data() || {}); // Set empty object as fallback when data is null
+        const usersRef = collection(db, "users");
+        const availableUsersQuery = showAvailableOnly
+          ? query(usersRef, where("availability", "==", true))
+          : usersRef;
+
+        const unsub = onSnapshot(availableUsersQuery, (snapshot) => {
+          const userArray = snapshot.docs.map((doc) => {
+            const data = doc.data();
+            return {
+              uid: doc.id,
+              ...data,
+            };
+          });
+          setUsers(userArray);
         });
 
-        return () => {
-          unsub();
-        };
+        return unsub;
       }
     };
 
-    getChats();
-  }, [currentUser]);
+    const unsubscribe = getUsers();
 
-  const handleSelect = (u) => {
-    dispatch({ type: "CHANGE_USER", payload: u });
+    return () => {
+      unsubscribe();
+    };
+  }, [currentUser, showAvailableOnly]);
+
+  const handleSelect = (selectedUser) => {
+    dispatch({ type: "CHANGE_USER", payload: selectedUser });
   };
 
   return (
     <div className="chats">
-      {Object.entries(chats)
-        .sort((a, b) => b[1].date - a[1].date)
-        .map(([chatId, chat]) => (
+      <div className="filter-container">
+        <label className="label">
+          Show Available Users:
+          <input
+            type="checkbox"
+            checked={showAvailableOnly}
+            onChange={(e) => setShowAvailableOnly(e.target.checked)}
+          />
+        </label>
+      </div>
+      {users
+        .sort((a, b) => b.lastActivity - a.lastActivity)
+        .map((user) => (
           <div
             className="userChat"
-            key={chatId}
-            onClick={() => handleSelect(chat.userInfo)}
+            key={user.uid}
+            onClick={() => handleSelect(user)}
           >
-            <img src={chat.userInfo.photoURL} alt="" />
+            <img src={user.photoURL} alt="" className="userChatPhoto" />
             <div className="userChatInfo">
-              <span>{chat.userInfo.displayName}</span>
-              <p>{chat.lastMessage?.text}</p>
+              <span className="userChatName">{user.displayName}</span>
+              <p className="userChatLastMessage">{user.lastMessage?.text}</p>
+              {user.availability && <span className="availability-dot" />}
             </div>
           </div>
         ))}
