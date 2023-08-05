@@ -49,7 +49,7 @@ const Chats = () => {
     <div className="chats">
       <div className="filter-container">
         <label className="label">
-          Show Available Users:
+          Hide Available Users:
           <input
             type="checkbox"
             checked={showAvailableOnly}
