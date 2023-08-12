@@ -12,6 +12,8 @@ const Chats = () => {
   const { dispatch } = useContext(ChatContext);
 
   useEffect(() => {
+    let unsubscribe;
+
     const getUsers = () => {
       if (currentUser && currentUser.uid) {
         const usersRef = collection(db, "users");
@@ -19,7 +21,7 @@ const Chats = () => {
           ? query(usersRef, where("availability", "==", true))
           : usersRef;
 
-        const unsub = onSnapshot(availableUsersQuery, (snapshot) => {
+        unsubscribe = onSnapshot(availableUsersQuery, (snapshot) => {
           const userArray = snapshot.docs.map((doc) => {
             const data = doc.data();
             return {
@@ -29,15 +31,15 @@ const Chats = () => {
           });
           setUsers(userArray);
         });
-
-        return unsub;
       }
     };
 
-    const unsubscribe = getUsers();
+    getUsers();
 
     return () => {
-      unsubscribe();
+      if (unsubscribe) {
+        unsubscribe(); // Unsubscribe when the component unmounts
+      }
     };
   }, [currentUser, showAvailableOnly]);
 
